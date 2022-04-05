@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:social_auth/services/auth.dart';
 
 class signUpScreen extends StatefulWidget {
   const signUpScreen({Key? key}) : super(key: key);
@@ -18,6 +20,14 @@ class _signUpScreenState extends State<signUpScreen> {
       new TextEditingController(text: "");
 
   bool optSent = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("initState");
+    checkLoginState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +127,9 @@ class _signUpScreenState extends State<signUpScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      signInWithGoogle().then((value) => print(value));
+                    },
                     icon: Icon(
                       AntDesign.google,
                       color: Colors.blue[600],
