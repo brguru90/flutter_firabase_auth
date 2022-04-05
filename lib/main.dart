@@ -6,8 +6,7 @@ void main() async {
   runApp(MaterialApp(
     initialRoute: "/",
     routes: {
-      "/": (context) => LoginScreen(),
-      "/sign_up": (context) => signUpScreen(),
+      "/": (context) => signUpScreen(),
     },
   ));
 }
