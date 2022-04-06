@@ -58,12 +58,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB4e-PSM_3W2cS2R6NdYgB_O5VbtWwAJj0',
-    appId: '1:794215675752:ios:357b16191942631ddfc8dd',
+    appId: '1:794215675752:ios:c2e87eab9854c7acdfc8dd',
     messagingSenderId: '794215675752',
     projectId: 'crud-eb4cc',
     databaseURL: 'https://crud-eb4cc-default-rtdb.firebaseio.com',
     storageBucket: 'crud-eb4cc.appspot.com',
-    iosClientId: '794215675752-e0o87i75n8fdcv4u90evkr2o0asg78uv.apps.googleusercontent.com',
-    iosBundleId: 'com.socialauth.app',
+    iosClientId: '794215675752-3t86sfc3r646bh5343sd79v56u4qf5bi.apps.googleusercontent.com',
+    iosBundleId: 'com.socialauth.ap',
   );
 }

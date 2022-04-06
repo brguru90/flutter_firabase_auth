@@ -2,15 +2,14 @@
 
 A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# sign app for the google authentication
+```
+cd android/app/google-services.json
+./gradlew signingReport
+```
+https://developers.google.com/android/guides/client-auth
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+FB
+https://facebook.meedu.app/docs/4.x.x/android
+https://developers.facebook.com/docs/facebook-login/android/?locale=en

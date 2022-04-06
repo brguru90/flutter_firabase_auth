@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -20,13 +22,19 @@ class _signUpScreenState extends State<signUpScreen> {
       new TextEditingController(text: "");
 
   bool optSent = true;
+  User? userDetail;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     print("initState");
-    checkLoginState();
+    bindToLoginStateChange().listen((eventValue) {
+      print(eventValue);
+      setState(() {
+        userDetail = eventValue;
+      });
+    });
   }
 
   @override
@@ -37,6 +45,7 @@ class _signUpScreenState extends State<signUpScreen> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+        // color: Colors.blue[50],
         child: Column(
           children: [
             Form(
@@ -128,7 +137,13 @@ class _signUpScreenState extends State<signUpScreen> {
               children: [
                 IconButton(
                     onPressed: () {
-                      signInWithGoogle().then((value) => print(value));
+                      googleAuth.signIn().then((UserCredential value) {
+                        print("user detail");
+                        print(value.user!.email);
+                        setState(() {
+                          userDetail = value.user;
+                        });
+                      });
                     },
                     icon: Icon(
                       AntDesign.google,
@@ -136,7 +151,15 @@ class _signUpScreenState extends State<signUpScreen> {
                       size: 40.0,
                     )),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    fbAuth.signIn().then((UserCredential value) {
+                      print("user detail");
+                      print(value.user!.email);
+                      setState(() {
+                        userDetail = value.user;
+                      });
+                    });
+                  },
                   icon: Icon(
                     AntDesign.facebook_square,
                     size: 40.0,
@@ -144,6 +167,42 @@ class _signUpScreenState extends State<signUpScreen> {
                   ),
                 )
               ],
+            ),
+            const SizedBox(
+              height: 40.0,
+            ),
+            Text(userDetail.toString())
+          ],
+        ),
+      ),
+      floatingActionButton: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+                padding: EdgeInsets.all(20),
+              ),
+              onPressed: () {
+                googleAuth.signOut();
+                // setState(() {
+                //   userDetail = null;
+                // });
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(
+                    Icons.logout,
+                    size: 20.0,
+                  ),
+                  Text(
+                    "Sign out",
+                    style: TextStyle(fontSize: 12.0),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

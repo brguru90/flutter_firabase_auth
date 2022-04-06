@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "794215675752",
+    "firebase_url": "https://crud-eb4cc-default-rtdb.firebaseio.com",
+    "project_id": "crud-eb4cc",
+    "storage_bucket": "crud-eb4cc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794215675752:android:d7afc26f6dd2949bdfc8dd",
+        "android_client_info": {
+          "package_name": "com.demo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794215675752-48h7k2tatu1n1u79entp4jdb5u501b4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCicuyPb2JIZbhgU8fi3hxcNmDQHMF1iGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794215675752-48h7k2tatu1n1u79entp4jdb5u501b4k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "794215675752-3t86sfc3r646bh5343sd79v56u4qf5bi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.socialauth.ap"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794215675752:android:5e4adfc6d4e2862bdfc8dd",
+        "android_client_info": {
+          "package_name": "com.example.social_auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794215675752-48h7k2tatu1n1u79entp4jdb5u501b4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCicuyPb2JIZbhgU8fi3hxcNmDQHMF1iGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794215675752-48h7k2tatu1n1u79entp4jdb5u501b4k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "794215675752-3t86sfc3r646bh5343sd79v56u4qf5bi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.socialauth.ap"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
