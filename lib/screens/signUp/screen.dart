@@ -5,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_auth/services/auth.dart';
+import 'package:social_auth/sharedComponents/toastMessages/toastMessage.dart';
 
 class signUpScreen extends StatefulWidget {
   const signUpScreen({Key? key}) : super(key: key);
@@ -31,6 +32,11 @@ class _signUpScreenState extends State<signUpScreen> {
     print("initState");
     bindToLoginStateChange().listen((eventValue) {
       print(eventValue);
+      if (eventValue == null) {
+        ToastMessage.error("Logged out");
+      } else {
+        ToastMessage.success("Logged in");
+      }
       setState(() {
         userDetail = eventValue;
       });
