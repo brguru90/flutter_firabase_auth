@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +15,8 @@ class signUpScreen extends StatefulWidget {
   State<signUpScreen> createState() => _signUpScreenState();
 }
 
+enum OtpStatus { none, sent, invalid, timeout }
+
 class _signUpScreenState extends State<signUpScreen> {
   final _formKey = GlobalKey<FormState>();
 
@@ -22,8 +25,8 @@ class _signUpScreenState extends State<signUpScreen> {
   final TextEditingController otpController =
       new TextEditingController(text: "");
 
-  bool optSent = true;
   User? userDetail;
+  OtpStatus otpStatus = OtpStatus.invalid;
 
   @override
   void initState() {
@@ -41,6 +44,41 @@ class _signUpScreenState extends State<signUpScreen> {
         userDetail = eventValue;
       });
     });
+  }
+
+  void verifyMobileNumber() {
+    MobileAuth.verify(
+        phoneNumber: mobileNumberController.text,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await auth.signInWithCredential(credential);
+          setState(() {
+            otpStatus = OtpStatus.none;
+            userDetail = UserCopy()..phoneNumber = mobileNumberController.text;
+          });
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          ToastMessage.error(e.toString());
+          print(e.toString());
+          // if(e.code == 'invalid-phone-number'){
+          //   return;
+          // }
+          setState(() {
+            otpStatus = OtpStatus.invalid;
+          });
+          _formKey.currentState!.validate();
+        },
+        codeAutoRetrievalTimeout: () {
+          setState(() {
+            otpStatus = OtpStatus.timeout;
+          });
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          setState(() {
+            otpStatus = OtpStatus.sent;
+          });
+          print("code sent");
+          ToastMessage.error("code sent");
+        });
   }
 
   @override
@@ -62,18 +100,46 @@ class _signUpScreenState extends State<signUpScreen> {
                   TextFormField(
                     controller: mobileNumberController,
                     cursorColor: Theme.of(context).cursorColor,
-                    maxLength: 50,
-                    decoration: const InputDecoration(
-                      icon: Icon(Icons.email),
+                    maxLength: 13,
+                    keyboardType: TextInputType.text,
+                    // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: InputDecoration(
+                      icon: const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                        child: Icon(Icons.email),
+                      ),
                       labelText: 'Enter mobile number',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Color(0xFF6200EE),
                       ),
-                      helperText: 'Ex:9482399078',
-                      suffixIcon: Icon(
-                        Icons.check_circle,
+                      helperText: 'Ex:+919482399078',
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                        child: TextButton(
+                          onPressed: verifyMobileNumber,
+                          style: TextButton.styleFrom(
+                            // fixedSize: Size.fromHeight(1),
+                            minimumSize: Size(0, 0),
+                            padding: EdgeInsets.zero,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: const [
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text("Get OTP"),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Icon(Icons.send)
+                            ],
+                          ),
+                        ),
                       ),
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF6200EE)),
                       ),
                     ),
@@ -85,7 +151,8 @@ class _signUpScreenState extends State<signUpScreen> {
                     },
                   ),
                   (() {
-                    if (optSent) {
+                    if (otpStatus == OtpStatus.timeout ||
+                        otpStatus == OtpStatus.invalid) {
                       return Wrap(
                         children: [
                           (TextFormField(
@@ -93,14 +160,20 @@ class _signUpScreenState extends State<signUpScreen> {
                             cursorColor: Theme.of(context).cursorColor,
                             maxLength: 50,
                             decoration: const InputDecoration(
-                              icon: Icon(Icons.email),
+                              icon: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                                child: Icon(Icons.email),
+                              ),
                               labelText: 'Enter OTP',
                               labelStyle: TextStyle(
                                 color: Color(0xFF6200EE),
                               ),
                               helperText: 'Ex:111111',
-                              suffixIcon: Icon(
-                                Icons.check_circle,
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                                child: Icon(
+                                  Icons.check_circle,
+                                ),
                               ),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide:
@@ -108,8 +181,8 @@ class _signUpScreenState extends State<signUpScreen> {
                               ),
                             ),
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
+                              if (otpStatus == OtpStatus.invalid) {
+                                return 'Please valid otp';
                               }
                               return null;
                             },
@@ -118,7 +191,9 @@ class _signUpScreenState extends State<signUpScreen> {
                         ],
                       );
                     }
-                    return SizedBox(height: 0.0);
+                    return SizedBox(
+                      height: 10.0,
+                    );
                   })(),
                   SizedBox(height: 20.0),
                   ElevatedButton(

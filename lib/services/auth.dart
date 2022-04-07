@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_platform_interface/src/platform_interface/platform_interface_user.dart';
 import 'package:social_auth/sharedComponents/toastMessages/toastMessage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -73,3 +74,32 @@ class FBAuth {
 }
 
 FBAuth fbAuth = FBAuth();
+
+class MobileAuth {
+  static void verify({
+    required String phoneNumber,
+    required Function(PhoneAuthCredential credential) verificationCompleted,
+    required Function(FirebaseAuthException e) verificationFailed,
+    required Function codeAutoRetrievalTimeout,
+    Function(String verificationId, int? resendToken)? codeSent,
+  }) async {
+    codeSent ??= (String verificationId, int? resendToken) {};
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+}
+
+class UserCopy implements User {
+  @override
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+  late Map _delegate;
+
+  set phoneNumber(String? a) {
+    _delegate["phoneNumber"] = a;
+  }
+}
