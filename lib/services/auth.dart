@@ -13,8 +13,8 @@ void initFirebaseSetup() async {
   auth = FirebaseAuth.instance;
 }
 
-void _signOut() {
-  FirebaseAuth.instance.signOut();
+Future authSignOut() async {
+  return await FirebaseAuth.instance.signOut();
 }
 
 Stream<User?> bindToLoginStateChange() {
@@ -48,7 +48,7 @@ class GoogleAuth {
   }
 
   void signOut() {
-    _signOut();
+    authSignOut();
   }
 }
 
@@ -68,8 +68,8 @@ class FBAuth {
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
-  void signOut() {
-    _signOut();
+  void signout() {
+    authSignOut();
   }
 }
 
@@ -92,14 +92,8 @@ class MobileAuth {
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
-}
 
-class UserCopy implements User {
-  @override
-  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-  late Map _delegate;
-
-  set phoneNumber(String? a) {
-    _delegate["phoneNumber"] = a;
+  void signout() {
+    authSignOut();
   }
 }
